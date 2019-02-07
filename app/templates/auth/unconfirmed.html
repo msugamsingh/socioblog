@@ -1,0 +1,23 @@
+{% extends "base.htm" %}
+
+{% block title %}Socio - Confirm Your Account{% endblock %}
+
+{% block page_content %}
+<div class="page-header">
+    <h1>Hello, {{ current_user.username }}!</h1>
+    <hr />
+
+    <h3>You have not confirmed your account yet.</h3>
+    
+    <p>
+        Before you can access this site you need to confirm your account.
+        Check your mail's inbox, you shoul've received an email with confirmation link.
+    </p>
+    <br />
+
+    <p>
+        Need another confirmation link?
+        <a href="{{ url_for('auth.resend_confirmation') }}">Click here</a>
+    </p>
+</div>
+{% endblock %}
