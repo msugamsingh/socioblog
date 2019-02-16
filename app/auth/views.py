@@ -11,7 +11,7 @@ from .forms import LoginForm, RegistrationForm, ChangePasswordForm, PasswordRese
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        user = User.query.filter_by(email=form.email.data).first()
+        user = User.query.filter_by(username=form.email_or_username.data).first() or User.query.filter_by(email_or_username=form.email.data).first()
         if user is not None and user.verify_password(password=form.password.data):
             login_user(user, form.remember_me.data)
             next = request.args.get('next')
@@ -137,7 +137,7 @@ def password_reset(token):
 @auth.route('/change_email', methods=['GET', 'POST'])
 @login_required
 def change_email_request():
-    form = ChangePasswordForm()
+    form = ChangeEmailForm()
     if form.validate_on_submit():
         if current_user.verify_password(form.password.data):
             new_email = form.email.data

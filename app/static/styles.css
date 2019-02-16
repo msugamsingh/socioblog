@@ -1,9 +1,13 @@
-.profile-thumbnail {
-    position: absolute;
+.grad {
+    background-image: linear-gradient(
+        to right, rgb(165, 210, 243), white
+    );
 }
-.profile-header {
-    min-height: 260px;
-    margin-left: 280px;
+.font {
+    font-family: cursive;
+}
+.profile-thumbnail {
+    position: relative;
 }
 div.post-tabs{
     margin-top: 16px;
@@ -105,15 +109,6 @@ div.pagination {
 .table.followers tr {
     border-bottom: solid 1px #e0e0e0
 }
-div.about {
-    width: 80%;
-    margin-left: 16%;
-    font-size: 18px;
-}
-div.img-about {
-    width: 30%;
-    margin-left: 30%
-}
 
 /* social media icons  */
 .fa {
@@ -156,4 +151,19 @@ div.img-about {
     color: white;
     transition: 0.3s;
     border-radius: 2px;
+}
+.fa-edit, .fa-comment, .fa-trash, .fa-link {
+    text-decoration: none;
+    display: inline;
+    font-size: 18px;
+    padding: 6px;
+    margin-left: 10px;
+    color: black;
+}
+.fa-edit:hover, .fa-comment:hover, .fa-trash:hover, .fa-link:hover {
+    color: rgba(0, 0, 0, 0.5)
+}
+.fa-user, .fa-user-plus {
+    font-size: 18px;
+    padding: 0 5px;
 }

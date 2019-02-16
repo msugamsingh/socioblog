@@ -1,3 +1,6 @@
+import os
+import secrets
+from PIL import Image
 from flask import render_template, abort, redirect, request, url_for, flash, current_app, make_response
 from flask_login import current_user, login_required
 from flask_sqlalchemy import get_debug_queries
@@ -45,19 +48,44 @@ def contact():
 @main.route('/user/<username>')
 def user(username):
     user = User.query.filter_by(username=username).first_or_404()
+    profile_picture = url_for('static', filename=f'profiles/{user.profile_pic}')
     page = request.args.get('page', 1, type=int)
     pagination = user.posts.order_by(Post.timestamp.desc()).paginate(
         page, per_page=current_app.config['POSTS_PER_PAGE'], error_out=False
     )
     posts = pagination.items
-    return render_template('user.html', user=user, posts=posts, pagination=pagination)
+    return render_template('user.html', user=user, profile_picture=profile_picture, posts=posts, pagination=pagination)
 
+
+def save_pictures(pic):
+    random_hex = secrets.token_hex(8)
+    _, pic_ext = os.path.splitext(pic.filename)
+    pic_name = random_hex + pic_ext
+    pic_name2 = '40' + random_hex + pic_ext 
+    pic_name3 = '18' + random_hex + pic_ext 
+    picture_path = os.path.join(current_app.root_path, 'static/profiles', pic_name)
+    picture_path2 = os.path.join(current_app.root_path, 'static/profiles', pic_name2)
+    picture_path3 = os.path.join(current_app.root_path, 'static/profiles', pic_name3)
+    size = (256,256)
+    size2 = (40,40)
+    size3 = (18,18)
+    i = Image.open(pic)
+    i.thumbnail(size)
+    i.save(picture_path)
+    i.thumbnail(size2)
+    i.save(picture_path2)
+    i.thumbnail(size3)
+    i.save(picture_path3)
+    return pic_name
 
 @main.route('/edit_profile', methods=['GET', 'POST'])
 @login_required
 def edit_profile():
     form = EditProfileForm()
     if form.validate_on_submit():
+        if form.profile.data:
+            picture_file = save_pictures(form.profile.data)
+            current_user.profile_pic = picture_file 
         current_user.name = form.name.data
         current_user.location = form.location.data
         current_user.about_me = form.about_me.data
@@ -134,6 +162,18 @@ def edit(id):
         return redirect(url_for('.post', id=post.id))
     form.body.data = post.body
     return render_template('edit_post.html', form=form)
+
+
+@main.route('/delete/<int:id>', methods=['GET', 'POST'])
+@login_required
+def delete_post(id):
+    post = Post.query.get_or_404(id)
+    if current_user != post.author and not current_user.can(Permission.ADMIN):
+        abort(403)
+    db.session.delete(post)
+    db.session.commit()
+    flash('Your post has been deleted.')
+    return redirect(url_for('.index'))
 
 
 @main.route('/follow/<username>')
@@ -257,11 +297,13 @@ def moderate_disable(id):
     return redirect(url_for('.moderate', page=request.args.get('page', 1 , type=int)))
 
 
-# @main.after_app_request
-# def after_request(response):
-#     for query in get_debug_queries():
-#         if query.duration >= current_app.config['SLOW_DB_QUERY_TIME']:
-#             current_app.logger.warning(
-#                 f'Slow query: {query.statement}\nParameters: {query.parameters}\nDuration: {query.duration}\nContext: {query.context}\n'
-#             )
-#     return response
+@login_required
+@admin_required
+@main.route('/count')
+def count_users():
+    total_users = User.query.count()
+    users_list = []
+    for user in User.query.all():
+        users_list.append(user)
+    return render_template('count_user.html', total_users=total_users, users_list=users_list)
+

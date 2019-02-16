@@ -13,12 +13,12 @@ class Config:
         ['True', 'on', '1']
     FLASKY_MAIL_SUBJECT_PREFIX = 'Socioblog'
     FLASKY_MAIL_SENDER = 'Socioblog tomerayush45a@gmail.com'
-    FLASKY_ADMIN = os.environ.get('FLASKY_ADMIN', 'singhsugam065@gmail.com')
+    FLASKY_ADMIN = os.environ.get('FLASKY_ADMIN')
     SSL_REDIRECT = False
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_RECORD_QUERIES = False
-    MAIL_USERNAME = 'tomerayush45a@gmail.com'
-    MAIL_PASSWORD = 'ash0n01t'
+    MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
+    MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
     POSTS_PER_PAGE = 10
     FOLLOWERS_PER_PAGE = 50
     COMMENTS_PER_PAGE = 20

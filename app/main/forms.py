@@ -1,4 +1,5 @@
 from flask_wtf import FlaskForm
+from flask_wtf.file import FileField, FileAllowed
 from wtforms import StringField, SubmitField, TextAreaField, PasswordField, BooleanField, SelectField
 from wtforms.validators import Required, DataRequired, Length, Email, Regexp
 from flask_pagedown.fields import PageDownField
@@ -8,6 +9,7 @@ from ..decorators import admin_required
 
 class EditProfileForm(FlaskForm):
 
+    profile = FileField('Change Photo', validators=[FileAllowed(['jpg', 'png'])]) 
     name = StringField('Name', validators=[Length(0, 64)])
     location = StringField('Location', validators=[Length(0, 64)])
     about_me = TextAreaField("About Me")

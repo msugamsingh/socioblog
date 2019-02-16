@@ -2,24 +2,19 @@
 {% block title %}Socio - About{% endblock %}
 
 {% block page_content %}
+
 <div class="page-header">
     <h1>About</h1>
 </div>
 <div class="container">
-    <div class="img-about">
-        <img src="{{ url_for('static', filename='insta3.jpg') }}" class="img-thumbnail" alt="developer"><br />
-    </div>
-        <hr />
-    <div class="about">
-        <p>
-            He is Sugam Singh (19 Y/O), learning to code, just ended up learning 'Flask'.
-            He made this blogging webapp with the help of Miguel's 'Flask Web Development'.
-            Also, he has implemented some other features as well.
-        </p>
-        <p>
-            He loves to learn new things. Currently, he is looking ahead for Mobile Development.
-        </p>
-    </div>
+    <img src="{{ url_for('static', filename='insta3.jpg') }}" class="img-about img-rounded img-responsive" alt="developer"><br />
+    <hr />
+    <blockquote>
+        He is Sugam Singh (19 YO), learning to code, just ended up learning 'Flask'.
+        He made this blogging webapp with the help of Miguel's 'Flask Web Development'.
+        Also, he has implemented some other features as well.
+        He loves to learn new things. Currently, he is looking ahead for Mobile Development.
+    </blockquote>
 </div>
     
 {% endblock %}

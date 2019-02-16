@@ -2,7 +2,7 @@
 {% block title %}Socio{% endblock %}
 {% block head %}
 {{ super() }}
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'styles.css') }}">
 <link rel="icon" href="{{ url_for('static', filename = 'favicon.ico') }}" type="image/x-icon">
 <link rel="shortcut icon" href="{{ url_for('static', filename = 'favicon.ico') }}" type="image/x-icon">
@@ -13,7 +13,7 @@
 {% endblock %}
 
 {% block navbar %}
-<div class="navbar navbar-inverse" role="navigation">
+<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -22,24 +22,25 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="{{ url_for('main.index') }}">Socioblog</a>
+            <a class="navbar-brand font" href="{{ url_for('main.index') }}">Socioblog</a>
         </div>
         <div class="navbar-collapse collapse">
-            <ul class="nav navbar-nav">
+            <ul class="nav navbar-nav font">
                 <li><a href="{{ url_for('main.index') }}">Home</a></li>
                 <li><a href="{{ url_for('main.about') }}">About</a></li>
                 <li><a href="{{ url_for('main.contact') }}">Contact</a></li>
             </ul>
-            <ul class="nav navbar-nav navbar-right">  
+            <ul class="nav navbar-nav navbar-right font">  
                 {% if current_user.can(Permission.MODERATE) %}
                 <li><a href="{{ url_for('main.moderate') }}">Moderate Comments</a></li>
                 {% endif %}
                 {% if current_user.is_authenticated %}
-                <li class="dropdown">
+                <li><a href="{{ url_for('main.count_users') }}">Users</a></li>
+                <li class="dropdown font">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <img src="{{ current_user.gravatar(size=18) }}"> Account <b class="caret"></b>
+                        <img class="img" src="{{ url_for('static', filename='profiles/18' + current_user.profile_pic) }}" > Account <b class="caret"></b>
                     </a>
-                    <ul class="dropdown-menu">
+                    <ul class="dropdown-menu font">
                         <li><a href="{{ url_for('main.user', username=current_user.username) }}">My Profile</a></li>
                         <li><a href="{{ url_for('auth.change_password') }}">Change Password</a></li>
                         <li><a href="{{ url_for('auth.change_email_request') }}">Change Email</a></li>
@@ -47,16 +48,19 @@
                     </ul>
                 </li>
                 {% else %}
-                <li><a href="{{ url_for('auth.login') }}">Log In</a></li>
+                <li><a class="fa fa-user" href="{{ url_for('auth.login') }}"></a></li>
+                <li><a class="fa fa-user-plus" href="{{ url_for('auth.register') }}"></a></li>
                 {% endif %}
             </ul>
         </div>
     </div>
 </div>
+<br />
 {% endblock %}
-{% block content %}
 
-<div class="container">
+{% block content %}
+<div class="container font">
+    <br /><br /><br />
     {% for message in get_flashed_messages() %}
     <div class="alert alert-warning">
         <button type="button" class="close" data-dismiss="alert">&times;</button>
@@ -65,7 +69,6 @@
     {% endfor %}
     {% block page_content %}{% endblock %}
 </div>
-
 {% endblock %}
 
 

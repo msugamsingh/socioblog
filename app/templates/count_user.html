@@ -1,0 +1,28 @@
+{% extends "base.htm" %}
+{% block title %}Socioblog - Total Users{% endblock %}
+
+{% block page_content %}
+
+<div class="page-header">
+    {% if current_user.is_administrator() %}
+        <h1>Total Users: {{ total_users }}</h1>
+    {% else %}
+        <h1>Users</h1>
+    {% endif %}
+</div>
+
+<table class="table table-hover table-responsive followers">
+    <thead><tr><th>Users</th></tr></thead>
+    {% for user in users_list %}
+    <tr>
+        <td>
+            <a href="{{ url_for('.user', username=user.username) }}">
+                <img class="img-rounded" src="{{ url_for('static', filename='profiles/40' + user.profile_pic) }}">
+                {{ user.username }}
+            </a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% endblock %}

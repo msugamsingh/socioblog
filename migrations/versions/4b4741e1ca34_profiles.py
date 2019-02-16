@@ -1,8 +1,8 @@
-"""last mile
+"""profiles
 
-Revision ID: 46f54ebcb707
+Revision ID: 4b4741e1ca34
 Revises: 
-Create Date: 2019-02-07 13:36:42.544012
+Create Date: 2019-02-12 08:53:12.631365
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '46f54ebcb707'
+revision = '4b4741e1ca34'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -39,7 +39,6 @@ def upgrade():
     sa.Column('about_me', sa.Text(), nullable=True),
     sa.Column('member_since', sa.DateTime(), nullable=True),
     sa.Column('last_seen', sa.DateTime(), nullable=True),
-    sa.Column('avatar_hash', sa.String(length=32), nullable=True),
     sa.ForeignKeyConstraint(['role_id'], ['roles.id'], ),
     sa.PrimaryKeyConstraint('id')
     )

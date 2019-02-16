@@ -8,6 +8,8 @@
     <h1>Edit Your Profile</h1>
 </div>
 <div class="col-md-4">
+    <img class='img-thumbnail' src="{{ url_for('static', filename='profiles/' + current_user.profile_pic) }}">
+    <hr />
     {{ wtf.quick_form(form) }}
 </div>
 {% endblock %}

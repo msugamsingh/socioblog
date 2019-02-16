@@ -3,7 +3,7 @@
     <li class="post">
         <div class="post-thumbnail">
             <a href="{{ url_for('.user', username=post.author.username) }}">
-                <img class="img-rounded profile-thumbnail" src="{{ post.author.gravatar(size=40) }}">
+                <img class="img-rounded profile-thumbnail" src="{{ url_for('static', filename='profiles/40' + post.author.profile_pic) }}">
             </a>
         </div>
         <div class="post-content">
@@ -18,14 +18,17 @@
             </div>
             <div class="post-footer">
                 <a href="{{ url_for('.post', id=post.id) }}">
-                    <span class="label label-default">Permalink</span>
+                        <span class="fa fa-link"></span>
                 </a>
                 <a href="{{ url_for('.post', id=post.id) }}#comments">
-                    <span class="label label-default">{{ post.comments.count() }} Commetns</span>
+                    <span class="fa fa-comment">{{ post.comments.count() }}</span>
                 </a>
                 {% if current_user == post.author %}
                 <a href="{{ url_for('.edit', id=post.id) }}">
-                    <span class="label label-primary">Edit</span>
+                    <span class="fa fa-edit"></span>
+                </a>
+                <a href="{{ url_for('.delete_post', id=post.id) }}">
+                    <span class="fa fa-trash inline-span"></span>
                 </a>
                 {% elif current_user.is_administrator() %}
                 <a href="{{ url_for('.edit', id=post.id) }}">

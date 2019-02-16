@@ -93,7 +93,7 @@ class User(UserMixin, db.Model):
     about_me = db.Column(db.Text())
     member_since = db.Column(db.DateTime(), default=datetime.utcnow)
     last_seen = db.Column(db.DateTime(), default=datetime.utcnow)
-    avatar_hash = db.Column(db.String(32))
+    profile_pic = db.Column(db.String(20), nullable=False, default='default.png')
     posts = db.relationship('Post', backref='author', lazy='dynamic')
     followed = db.relationship('Follow',
                                foreign_keys=[Follow.follower_id],
@@ -116,8 +116,6 @@ class User(UserMixin, db.Model):
                 self.role = Role.query.filter_by(name='Administrator').first()
             if self.role is None:
                 self.role = Role.query.filter_by(default=True).first()
-        if self.email is not None and self.avatar_hash is None:
-            self.avatar_hash = self.gravatar_hash()
         self.follow(self)
 
     def ping(self):
@@ -198,14 +196,6 @@ class User(UserMixin, db.Model):
 
     def is_administrator(self):
         return self.can(Permission.ADMIN)
-
-    def gravatar_hash(self):
-        return hashlib.md5(self.email.lower().encode('utf-8')).hexdigest()
-
-    def gravatar(self, size=100, default='mm', rating='g'):
-        url = 'https://secure.gravatar.com/avatar'
-        hash = self.avatar_hash or self.gravatar_hash()
-        return f'{url}/{hash}?s={size}&d={default}&r={rating}'
 
     def follow(self, user):
         if not self.is_following(user):
