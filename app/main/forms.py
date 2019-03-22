@@ -9,7 +9,7 @@ from ..decorators import admin_required
 
 class EditProfileForm(FlaskForm):
 
-    profile = FileField('Change Photo', validators=[FileAllowed(['jpg', 'png', 'jpeg'])]) 
+    profile = FileField('Change Photo', validators=[FileAllowed(['jpg', 'png'])]) 
     name = StringField('Name', validators=[Length(0, 64)])
     location = StringField('Location', validators=[Length(0, 64)])
     about_me = TextAreaField("About Me")
